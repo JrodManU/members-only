@@ -4,5 +4,9 @@
   <%= f.email_field :email %><br>
   <%= f.label :password %><br>
   <%= f.password_field :password %><br>
+  <%= f.label :remember do %>
+    <%= f.check_box :remember %>
+    <span>Remember me</span>
+  <% end %><br>
   <%= f.submit "Log in" %>
 <% end %>

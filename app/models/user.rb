@@ -1,6 +1,5 @@
 class User < ApplicationRecord
   attr_accessor :remember_token
-
   has_secure_password
 
   def authenticated?(attribute, token)
@@ -10,12 +9,12 @@ class User < ApplicationRecord
   end
 
   def new_remember_token
-    remember_token = User.digest(User.new_token)
-    update_attributes(:remember_digest, remember_token)
+    self.remember_token = User.new_token
+    update_attribute(:remember_digest, User.digest(remember_token))
   end
 
   def clear_remember_digest
-    update_attributes(:remember_digest, nil)
+    update_attribute(:remember_digest, nil)
   end
 
   def User.new_token
