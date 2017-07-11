@@ -1,0 +1,8 @@
+<div class="post">
+  <h2><%= post.title %></h2>
+  <% if current_user %>
+    <i><%= User.find(post.user_id).name %></i>
+  <% end %>
+  <p><%= post.body %></p>
+  <hr>
+</div>

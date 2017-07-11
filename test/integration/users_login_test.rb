@@ -8,7 +8,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
   test "successful login and logout" do
     get login_path
     assert_template 'sessions/new'
-    post login_path, params: { session: { email: @user.email, password: 'password', remember: true } }
+    log_in_as @user
     assert_redirected_to @user
     user = assigns(:user)
     delete logout_path
@@ -18,22 +18,22 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "invalid login" do
     get login_path
-    post login_path, params: { session: { email: @user.email, password: 'notthepassword', remember: false } }
+    log_in_as @user, password: "wrongpassword"
     assert_template 'sessions/new'
     assert_not flash.empty?
   end
 
   test "successful login and remember" do
     get login_path
-    post login_path, params: { session: { email: @user.email, password: 'password', remember: true } }
+    log_in_as @user
     user = assigns(:user)
     assert_not user.remember_token.nil?
     assert_equal user.remember_token, cookies['remember_token']
   end
 
   test "succesful forget" do
-    post login_path, params: { session: { email: @user.email, password: 'password', remember: true } }
-    post login_path, params: { session: { email: @user.email, password: 'password', remember: false } }
+    log_in_as @user
+    log_in_as @user, remember: false
     assert_nil cookies[:remember_token]
     assert_nil cookies[:user_id]
   end

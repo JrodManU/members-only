@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   attr_accessor :remember_token
 
+  has_many :posts
+
   before_save :downcase_email
 
   has_secure_password
@@ -8,7 +10,7 @@ class User < ApplicationRecord
   validates :name, length: { minimum: 5, maximum: 25 }, presence: true
   validates :password, length: { minimum: 8, maximum: 50 }, presence: true
   VALID_EMAIL_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i
-  validates :email, length { maximum: 255 }, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
+  validates :email, length: { maximum: 255 }, presence: true, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }
 
   def authenticated?(attribute, token)
     digest = self.send("#{attribute}_digest")

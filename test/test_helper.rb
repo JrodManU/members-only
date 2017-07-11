@@ -4,6 +4,10 @@ require 'rails/test_help'
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
+end
 
-  # Add more helper methods to be used by all tests here...
+class ActionDispatch::IntegrationTest
+  def log_in_as(user, password: 'password', remember: true)
+    post login_path, params: { session: { email: user.email, password: password, remember: remember } }
+  end
 end
